@@ -1,4 +1,4 @@
-import axios from 'axios';
+import  axios from "axios";
 import * as ActionTypes from './types';
 
 const API_BASE_URL = 'http://localhost:8080';
@@ -32,10 +32,13 @@ export const addSatellite = (satelliteData) => {
   }
 };
 
-export const getSatellite = (satelliteData) => {
+export const getSatellite = (satelliteData, modalFlag) => {
   return {
-    type: ActionTypes.UPDATE_SATELLITE,
-    payload: satelliteData
+    type: ActionTypes.SET_SELECTED_SATELLITE,
+    payload: {
+      satelliteData,
+      modalFlag
+    }
   }
 }
 
@@ -44,20 +47,12 @@ export const updateSatellite = (id, satelliteData) => async (dispatch) => {
     const response = await axios.put(`${API_BASE_URL}/satellites/${id}`, satelliteData);
     const updatedSatellite = response.data;
 
-    console.log("updatedSatellite", updatedSatellite);
     dispatch({
       type: ActionTypes.UPDATE_SATELLITE,
       payload: updatedSatellite
     });
   } catch (error) {
 
-  }
-}
-
-export const updateSelectedSatellite = (satelliteData) => {
-  return {
-    type: ActionTypes.SET_SELECTED_SATELLITE,
-    payload: satelliteData
   }
 }
 
@@ -79,5 +74,12 @@ export const searchSatellites = (searchQuery) => {
   return {
     type: ActionTypes.SEARCH_SATELLITES,
     payload: searchQuery
+  }
+}
+
+export const setModalInvisible = () => {
+  return {
+    type: ActionTypes.MODAL_INVISIBLE,
+    payload: false
   }
 }

@@ -4,19 +4,14 @@ import Map, { Marker } from 'react-map-gl';
 import styled from 'styled-components';
 import * as resuableComponents from '../../reusable-components';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
-import {updateSelectedSatellite} from '../../actions'
+import {setModalInvisible, getSatellite} from '../../actions'
 
 const MAPBOX_ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
-
-const MapContainer = styled.div`
-  width: 100%;
-`;
 
 const MarkerButton = styled.button`
   width: 16px;
   height: 16px;
   background-color: ${({ selected }) => (selected ? 'red' : 'blue')};
-
   border-radius: 50%;
   border: none;
   cursor: pointer;
@@ -25,16 +20,16 @@ const MarkerButton = styled.button`
 const MapApp = () => {
 
   const mapboxToken = MAPBOX_ACCESS_TOKEN;
-  const {ModalContainer, ModalDialog, ModalHeader, ModalBody, IconArea, TitleContainer, CloseButton, FormGroup, LabelForm} = resuableComponents;
+  const {ModalContainer, Modal, ModalHeader, ModalBody, IconArea, TitleContainer, IconButton, FormGroup, LabelForm} = resuableComponents;
 
   const dispatch = useDispatch();
 
   const satellites = useSelector(state => state.satellites);
   const searchQuery = useSelector(state => state.searchQuery);
   const selectedSatellite = useSelector(state => state.selectedSatellite);
-  
+  const modalVisible = useSelector(state => state.modalVisible)
+
   const [filteredSatellites, setFilteredSatellites] = useState([]);
-  const [setSatellite, setSetSatellite] = useState(null);
   const [viewState, setViewState] = useState({
     width: '100%',
     height: '100vh',
@@ -57,7 +52,6 @@ const MapApp = () => {
       );
     }
     if(selectedSatellite !== null) {
-      setSetSatellite(selectedSatellite);
       setViewState({
         ...viewState,
         latitude: selectedSatellite.latitude || 0,
@@ -67,20 +61,20 @@ const MapApp = () => {
   }, [trimedQuery, satellites, selectedSatellite]);
 
   const handleMarkerClick = (satellite) => {
-    dispatch(updateSelectedSatellite(satellite));
+    dispatch(getSatellite(satellite, true));
   }
 
   const handleCloseClick = () => {
-    setSetSatellite(null);
+    dispatch(setModalInvisible());
   }
 
   return (
-    <MapContainer>
+    // <div data-testid='map-container'>
       <Map
         {...viewState}
         style={{width: '100%', height: '100vh'}}
         onMove={e => setViewState(e.viewState)}
-        mapStyle="mapbox://styles/mapbox/streets-v9"
+        mapStyle='mapbox://styles/mapbox/streets-v9'
         mapboxAccessToken={mapboxToken}
       >
         {filteredSatellites.map(satellite => (
@@ -91,23 +85,23 @@ const MapApp = () => {
           >
             <MarkerButton
               id={`marker-${satellite.id}`}
+              data-testid={`marker-${satellite.id}`}
               selected={selectedSatellite === satellite}
               onClick={() => handleMarkerClick(satellite)}
             />
           </Marker>
         ))}
-
         {
-          setSatellite && (
+          modalVisible && (
             <ModalContainer>
-              <ModalDialog width='300px'>
+              <Modal width='300px'>
                 <ModalHeader>
                   <TitleContainer>
                     Satellite Detail
                   </TitleContainer>
-                  <CloseButton onClick={(satellite) => handleCloseClick(satellite)}>
+                  <IconButton onClick={(satellite) => handleCloseClick(satellite)}>
                     <IconArea icon = {faClose} color='#566787' />
-                  </CloseButton>
+                  </IconButton>
                 </ModalHeader>
                 <ModalBody>
                   <FormGroup>
@@ -131,12 +125,12 @@ const MapApp = () => {
                     </LabelForm>
                   </FormGroup>
                 </ModalBody>
-              </ModalDialog>
+              </Modal>
             </ModalContainer>
           )
         }
       </Map>
-    </MapContainer>
+    // </div>
   );
 };
 

@@ -2,9 +2,9 @@ import * as ActionsTypes from "../actions/types";
 
 const initialState = {
   satellites: [],
-  filteredSatellites:[],
   selectedSatellite: null,
   searchQuery: '',
+  modalVisible: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -32,7 +32,8 @@ const reducer = (state = initialState, action) => {
     case ActionsTypes.SET_SELECTED_SATELLITE:
       return {
         ...state,
-        selectedSatellite: action.payload
+        selectedSatellite: action.payload.satelliteData,
+        modalVisible: action.payload.modalFlag
       }
     case ActionsTypes.DELETE_SATELLITE:
       return {
@@ -44,6 +45,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         selectedSatellite: null,
         searchQuery: action.payload
+      }
+    case ActionsTypes.MODAL_INVISIBLE:
+      return {
+        ...state,
+        modalVisible: false
       }
     default:
       return state;

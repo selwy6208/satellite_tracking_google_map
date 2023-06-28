@@ -1,25 +1,31 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux'
-import * as components from '../../reusable-components';
+import * as resuableComponents from '../../reusable-components';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
 import {addSatellite, updateSatellite} from '../../actions';
+import styled from 'styled-components';
+
+export const ErrorLabel = styled.span`
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+`;
 
 const SatelliteModal = (props) => {
   const {
     IconArea,
     ModalContainer,
-    ModalDialog,
+    Modal,
     ModalHeader,
     TitleContainer,
-    CloseButton,
+    IconButton,
     ModalBody,
     FormGroup,
     InputForm,
     LabelForm,
     ModalFooter,
-    ModalButton,
-    ErrorLabel
-  } = components;
+    Button
+  } = resuableComponents;
 
   const [name, setName] = useState("");
   const [owner, setOwner] = useState("");
@@ -85,14 +91,14 @@ const SatelliteModal = (props) => {
 
   return (
     <ModalContainer>
-      <ModalDialog>
+      <Modal>
         <ModalHeader>
           <TitleContainer>
             {props.operationType + ' Satellite'}
           </TitleContainer>
-          <CloseButton onClick = {props.onCancelClick}>
+          <IconButton onClick = {props.onCancelClick}>
             <IconArea icon = {faClose} color='#566787' />
-          </CloseButton>
+          </IconButton>
         </ModalHeader>
         <ModalBody>
           <FormGroup>
@@ -126,16 +132,16 @@ const SatelliteModal = (props) => {
           </FormGroup>
         </ModalBody>
         <ModalFooter>
-          <ModalButton onClick={props.onCancelClick}>
+          <Button onClick={props.onCancelClick}>
             Cancel
-          </ModalButton>
-          <ModalButton backgroundColor='#4611a7' color='white' onClick={handleOkClick}>
+          </Button>
+          <Button backgroundColor='#4611a7' color='white' onClick={handleOkClick}>
             {
               props.operationType === 'Add' ? 'Add' : 'Save'
             }
-          </ModalButton>
+          </Button>
         </ModalFooter>
-      </ModalDialog>
+      </Modal>
     </ModalContainer>
   );
 }

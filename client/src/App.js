@@ -5,12 +5,11 @@ import SearchBar from './components/SearchBar';
 import List from './components/List';
 import Map from './components/Map';
 import SatelliteModal from './components/SatelliteModal';
-import DeletePopup  from './components/DeletePopup';
-
+import DeletePopup from './components/DeletePopup';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import * as components from './reusable-components';
+import * as resuableComponents from './reusable-components';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import {getAllSatellites, deleteSatellite} from './actions';
+import { getAllSatellites, deleteSatellite } from './actions';
 
 const AppContainer = styled.div`
   display: flex;
@@ -34,29 +33,29 @@ const SatelliteListContainer = styled.div`
 
 function App() {
 
-  const {PlusButton, IconArea} = components;
+  const {PlusButton, IconArea} = resuableComponents;
   const dispatch = useDispatch();
 
-  const [isFormOpen, setFormOpen] = useState(false);
+  const [showFormOpen, setShowFormOpen] = useState(false);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const [operationType, setOperationType] = useState('Add');
 
   useEffect(() => {
     dispatch(getAllSatellites());
-  }, []);
+  }, [dispatch]);
 
   const handleOpenAddForm = () => {
-    setFormOpen(true);
+    setShowFormOpen(true);
     setOperationType('Add');
   };
 
   const handleOpenEditForm = () => {
-    setFormOpen(true);
+    setShowFormOpen(true);
     setOperationType('Edit');
   }
 
   const handleCloseForm = () => {
-    setFormOpen(false);
+    setShowFormOpen(false);
   };
 
   const handleConfirmDelete = (id) => {
@@ -85,11 +84,11 @@ function App() {
             handleDeleteClick = {handleDeleteClick}
           />
           <PlusButton onClick={handleOpenAddForm}>
-            <IconArea icon={faPlus} />
+            <IconArea icon={faPlus} marginright='0px'/>
           </PlusButton>
         </SatelliteListContainer>
         <Map />
-        {isFormOpen && (
+        {showFormOpen && (
           <SatelliteModal
             onCancelClick = {handleCloseForm}
             operationType = {operationType}

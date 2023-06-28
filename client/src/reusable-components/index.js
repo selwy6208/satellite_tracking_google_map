@@ -1,38 +1,5 @@
-import styled, {keyframes, css} from 'styled-components';
+import styled, {keyframes} from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-export const ListContainer = styled.div`
-  width: 100%;
-  height: 100vh;
-  overflow: scroll;
-`;
-
-export const FlexContainer = styled.div`
-  display: flex;
-`
-
-export const ListItem = styled.div`
-  cursor: pointer;
-  padding: 8px 20px;
-  border-bottom: 1px solid #cebbf1;
-  ${(props) =>
-    props.selected &&
-    css`
-      background-color: #dcd2ef;
-    `}
-  &:hover {
-    border-left: 6px solid #4611a7;
-  }
-`;
-
-export const HeadContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-`
-
-export const ActionContainer = styled.div`
-  display: flex;
-`
 
 export const TitleContainer = styled.div`
   font-size: 18px;
@@ -40,22 +7,6 @@ export const TitleContainer = styled.div`
   color: ${(props) => props.color || '#566787'};
   display: flex;
   align-items: center;
-`
-
-export const MainContentContainer = styled.div`
-  margin-top: 3px;
-  font-size: 15px;
-`
-
-export const TailContainer = styled.div`
-  margin-top: 12px;
-  font-size: 10px;
-`
-
-export const MarkerIcon = styled(FontAwesomeIcon)`
-  color: #909090;
-  font-size: ${(props) => props.fontSize || '10px'};
-  margin-right: 5px;
 `;
 
 export const PlusButton = styled.button`
@@ -74,58 +25,38 @@ export const PlusButton = styled.button`
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
 `;
 
-export const EditButton = styled.button`
-  width: 30px;
-  height: 30px;
-  border: none;
-  background-color: transparent;
+export const IconButton = styled.button`
+  width: ${(props) => props.width || '30px'};
+  height: ${(props) => props.height || '30px'};
   cursor: pointer;
   display: flex;
-  align-items: center;
   justify-content: center;
-`;
-
-export const RemoveButton = styled.button`
-  width: 30px;
-  height: 30px;
+  align-items: center;
   border: none;
-  background-color: transparent;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-export const CloseButton = styled.button`
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #999;
-  font-size: 16px;
-  transition: color 0.3s ease;
-
-  &:hover {
-    color: #555;
-  }
-`;
-
-export const ArrowButton = styled.button`
-  border: none;
-  background-color: #a3a3a3;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background-color: ${(props) => props.backgroundColor || 'transparent'};
 `;
 
 export const IconArea = styled(FontAwesomeIcon)`
   color: ${(props) => props.color || 'white'};
   font-size: ${(props) => props.fontSize || '16px'};
+  margin-right: ${(props) => props.marginright || '5px'};
 `;
+
+export const Button = styled.button`
+  display: inline-block;
+  font-weight: 400;
+  text-align: center;
+  vertical-align: middle;
+  border: 1px solid transparent;
+  padding: 6px 12px;
+  font-size: 16px;
+  line-height: 1.5;
+  cursor: pointer;
+  border-radius: 3px;
+  margin-right: 10px;
+  background-color: ${(props) => props.backgroundColor || 'none'};
+  color: ${(props) => props.color || '#212529'};
+`
 
 const slideDown = keyframes`
   from {
@@ -151,7 +82,7 @@ export const ModalContainer = styled.div`
   animation: ${slideDown} 0.3s ease-in-out;
 `;
 
-export const ModalDialog = styled.div`
+export const Modal = styled.div`
   width: ${(props) => props.width || '400px'};
   background-color: white;
   border-radius: 8px;
@@ -174,6 +105,16 @@ export const ModalBody = styled.div`
   padding: 20px 30px;
 `
 
+export const ModalFooter = styled.div`
+  padding: 20px 30px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  border-top; 1px solid #dee2e6;
+  background: #ecf0f1;
+`
+
 export const FormGroup = styled.div`
   margin-bottom: 10px;
   display: block;
@@ -182,7 +123,7 @@ export const FormGroup = styled.div`
 export const LabelForm = styled.div`
   font-weight: normal;
   display: block;
-  margin-bottom: 0.5rem;
+  margin-bottom: 8px;
 `
 
 export const InputForm = styled.input`
@@ -194,65 +135,9 @@ export const InputForm = styled.input`
   border-color: #dddddd;
   box-shadow: none;
   width: 100%;
-  font-size: 1rem;
-  padding: 0.375rem 0.75rem;
+  font-size: 16px;
+  padding: 6px 12px;
   background-clip: padding-box;
   box-sizing: border-box;
 `
 
-export const ModalFooter = styled.div`
-  padding: 20px 30px;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: flex-end;
-  border-top; 1px solid #dee2e6;
-  background: #ecf0f1;
-`
-
-export const ModalButton = styled.button`
-  display: inline-block;
-  font-weight: 400;
-  text-align: center;
-  vertical-align: middle;
-  border: 1px solid transparent;
-  padding: 0.375rem 0.75rem;
-  font-size: 1rem;
-  line-height: 1.5;
-  cursor: pointer;
-  border-radius: 3px;
-  margin-right: 10px;
-  background-color: ${(props) => props.backgroundColor || 'none'};
-  color: ${(props) => props.color || '#212529'};
-`
-
-export const PopupContainer = styled.div`
-  background-color: #fff;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 16px;
-  max-width: 300px;
-`;
-
-export const MessageContainer = styled.p`
-  margin-bottom: 16px;
-`;
-
-export const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: flex-end;
-`;
-
-export const SatelliteDetailModal = styled.div`
-  position: absolute;
-  background-color: white;
-  padding: 20px;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-`
-
-export const ErrorLabel = styled.span`
-  color: red;
-  font-size: 12px;
-  margin-top: 5px;
-`;

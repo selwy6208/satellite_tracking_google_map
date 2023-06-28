@@ -1,9 +1,7 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import * as resuableComponents from '../../reusable-components';
-import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import {searchSatellites} from '../../actions';
+import { searchSatellites } from '../../actions';
 
 const SearchInput = styled.input`
   box-sizing: border-box;
@@ -12,10 +10,7 @@ const SearchInput = styled.input`
   font-size: 15px;
 `;
 
-
 const SearchBar = () => {
-  const {FlexContainer, ArrowButton, IconArea} = resuableComponents;
-
   const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -24,18 +19,13 @@ const SearchBar = () => {
     dispatch(searchSatellites(e.target.value));
   }
 
-  const handleSearchButtonClick = () => {
-  }
-
   return (
-    <FlexContainer>
-      <SearchInput
+    <SearchInput
         type="text"
         placeholder="Search..."
         value={searchQuery}
         onChange={handleSearchQueryChange}
-      />
-    </FlexContainer>
+    />
   );
 }
 
