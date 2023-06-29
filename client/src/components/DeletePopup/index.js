@@ -27,17 +27,18 @@ const DeletePopup = ({ onCancel, onConfirm }) => {
     ModalContainer
   } = reusableComponents;
 
-  const satelliteToDelete = useSelector(state => state.selectedSatellite);
+  const satelliteToDelete = useSelector(state => state.satellites.selectedSatellite);
+  console.log(satelliteToDelete);
 
   return (
     <ModalContainer>
       <PopupContainer>
         <MessageContainer>
-          Are you sure you want to delete the satellite - {satelliteToDelete.name}?
+          Are you sure you want to delete the satellite - {satelliteToDelete?.name}?
         </MessageContainer>
         <ButtonContainer>
           <Button onClick={onCancel} >Cancel</Button>
-          <Button onClick={() => onConfirm(satelliteToDelete.id)} backgroundColor='#4611a7' color='white'>Continue</Button>
+          <Button onClick={() => onConfirm(satelliteToDelete?.id)} backgroundColor='#4611a7' color='white'>Continue</Button>
         </ButtonContainer>
       </PopupContainer>
     </ModalContainer>

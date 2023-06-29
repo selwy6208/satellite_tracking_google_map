@@ -9,7 +9,7 @@ import DeletePopup from './components/DeletePopup';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import * as resuableComponents from './reusable-components';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { getAllSatellites, deleteSatellite } from './actions';
+import { getAllSatellites, deleteSatellite } from './actions/satellitesActions';
 
 const AppContainer = styled.div`
   display: flex;

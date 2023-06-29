@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { faMapMarkerAlt, faUserAlt, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import * as resuableComponents from '../../reusable-components';
-import { getSatellite } from '../../actions'
+import { getSatellite } from '../../actions/satellitesActions'
 import styled, {css} from 'styled-components';
 
 const ListContainer = styled.div`
@@ -47,9 +47,9 @@ const TailContainer = styled.div`
 const List = ({ handleEditClick, handleDeleteClick }) => {
 
   const dispatch = useDispatch();
-  const satellites = useSelector(state => state.satellites);
-  const searchQuery = useSelector(state => state.searchQuery);
-  const selectedSatellite = useSelector(state => state.selectedSatellite);
+  const satellites = useSelector(state => state.satellites.satellites);
+  const searchQuery = useSelector(state => state.satellites.searchQuery);
+  const selectedSatellite = useSelector(state => state.satellites.selectedSatellite);
   const [filteredSatellites, setFilteredSatellites] = useState([]);
 
   const trimedQuery = searchQuery?.toLowerCase().trim();
@@ -81,9 +81,10 @@ const List = ({ handleEditClick, handleDeleteClick }) => {
     handleEditClick();
   }
 
-  const onRemoveClick = (e) => {
+  const onRemoveClick = (satellite, e) => {
     e.stopPropagation();
     e.preventDefault();
+    dispatch(getSatellite(satellite, false));
     handleDeleteClick();
   }
 
@@ -109,7 +110,7 @@ const List = ({ handleEditClick, handleDeleteClick }) => {
               <IconButton data-testid={`edit-${satellite.id}`} onClick={(e) => onEditClick(satellite, e)}>
                 <IconArea icon={faEdit} color='#FFC107'/>
               </IconButton>
-              <IconButton data-testid={`remove-${satellite.id}`} onClick={(e) => onRemoveClick(e)}>
+              <IconButton data-testid={`remove-${satellite.id}`} onClick={(e) => onRemoveClick(satellite, e)}>
                 <IconArea icon={faTrash} color='#F44336'/>
               </IconButton>
             </ActionContainer>

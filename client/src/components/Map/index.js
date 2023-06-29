@@ -1,14 +1,13 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Map, { Marker } from 'react-map-gl';
+import Map, { Marker, Popup } from 'react-map-gl';
 import styled from 'styled-components';
 import * as resuableComponents from '../../reusable-components';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
-import {setModalInvisible, getSatellite} from '../../actions'
+import { setModalInvisible, getSatellite } from '../../actions/satellitesActions'
+import { fetchCitiesRequest, fetchCities } from '../../actions/citiesActions';
 
-const MAPBOX_ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
-
-const MarkerButton = styled.button`
+const MarkerButton = styled.div`
   width: 16px;
   height: 16px;
   background-color: ${({ selected }) => (selected ? 'red' : 'blue')};
@@ -17,6 +16,24 @@ const MarkerButton = styled.button`
   cursor: pointer;
 `;
 
+const CityMarker = styled.div`
+  width: 5px;
+  height: 5px;
+  background-color: green;
+  border-radius: 50%;
+`;
+
+const LoadingContainer = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  color: #4611a7;
+  font-size: 15px;
+  transform: translate(-50%, -50%);
+`;
+
+const MAPBOX_ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
+
 const MapApp = () => {
 
   const mapboxToken = MAPBOX_ACCESS_TOKEN;
@@ -24,10 +41,12 @@ const MapApp = () => {
 
   const dispatch = useDispatch();
 
-  const satellites = useSelector(state => state.satellites);
-  const searchQuery = useSelector(state => state.searchQuery);
-  const selectedSatellite = useSelector(state => state.selectedSatellite);
-  const modalVisible = useSelector(state => state.modalVisible)
+  const satellites = useSelector(state => state.satellites.satellites);
+  const searchQuery = useSelector(state => state.satellites.searchQuery);
+  const selectedSatellite = useSelector(state => state.satellites.selectedSatellite);
+  const modalVisible = useSelector(state => state.satellites.modalVisible)
+  const citiesResponse = useSelector(state => state.cities.cities);
+  const citiesLoading = useSelector(state => state.cities.loading);
 
   const [filteredSatellites, setFilteredSatellites] = useState([]);
   const [viewState, setViewState] = useState({
@@ -37,6 +56,7 @@ const MapApp = () => {
     longitude: 0,
     zoom: 5,
   });
+  const [cities, setCities] = useState([]);
 
   const trimedQuery = searchQuery?.toLowerCase().trim();
 
@@ -51,6 +71,7 @@ const MapApp = () => {
         )
       );
     }
+    
     if(selectedSatellite !== null) {
       setViewState({
         ...viewState,
@@ -58,15 +79,25 @@ const MapApp = () => {
         longitude: selectedSatellite.longitude || 0,
       });
     }
-  }, [trimedQuery, satellites, selectedSatellite]);
+
+    setCities(citiesResponse);
+    console.log(citiesResponse.length);
+  }, [trimedQuery, satellites, selectedSatellite, citiesResponse]);
 
   const handleMarkerClick = (satellite) => {
     dispatch(getSatellite(satellite, true));
   }
 
+  const handleHoverClick = (satellite) => {
+    dispatch(fetchCitiesRequest());
+    dispatch(fetchCities(satellite));
+  }
+
   const handleCloseClick = () => {
     dispatch(setModalInvisible());
   }
+
+  
 
   return (
     // <div data-testid='map-container'>
@@ -88,9 +119,21 @@ const MapApp = () => {
               data-testid={`marker-${satellite.id}`}
               selected={selectedSatellite === satellite}
               onClick={() => handleMarkerClick(satellite)}
+              onMouseOver ={() => handleHoverClick(satellite)}
             />
           </Marker>
         ))}
+        {cities.map((city) => (
+          <Marker
+            key={city.id}
+            latitude={city.latitude}
+            longitude={city.longitude}
+          >
+            <CityMarker />
+            <div>{city.name}</div>
+          </Marker>
+          )
+        )}
         {
           modalVisible && (
             <ModalContainer>
@@ -129,6 +172,13 @@ const MapApp = () => {
             </ModalContainer>
           )
         }
+        {
+        citiesLoading && (
+          <LoadingContainer>
+            Loading cities...
+          </LoadingContainer>
+        )
+      }
       </Map>
     // </div>
   );

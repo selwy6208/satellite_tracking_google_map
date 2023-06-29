@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { searchSatellites } from '../../actions';
+import { searchSatellites } from '../../actions/satellitesActions';
 
 const SearchInput = styled.input`
   box-sizing: border-box;

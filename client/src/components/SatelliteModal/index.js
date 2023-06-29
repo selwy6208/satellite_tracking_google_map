@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux'
 import * as resuableComponents from '../../reusable-components';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
-import {addSatellite, updateSatellite} from '../../actions';
+import {addSatellite, updateSatellite} from '../../actions/satellitesActions';
 import styled from 'styled-components';
 
 export const ErrorLabel = styled.span`
@@ -29,12 +29,12 @@ const SatelliteModal = (props) => {
 
   const [name, setName] = useState("");
   const [owner, setOwner] = useState("");
-  const [latitude, setLatitude] = useState(0);
-  const [longitude, setLongitude] = useState(0);
+  const [latitude, setLatitude] = useState("");
+  const [longitude, setLongitude] = useState("");
   const [errors, setErrors] = useState({});
 
   const dispatch = useDispatch();
-  const selectedSatellite = useSelector(state => state.selectedSatellite)
+  const selectedSatellite = useSelector(state => state.satellites.selectedSatellite)
 
   const handleNameChange = (e) => {
     setName(e.target.value);
@@ -45,11 +45,11 @@ const SatelliteModal = (props) => {
   }
 
   const handleLatitudeChange = (e) => {
-    setLatitude(e.target.value)
+    parseFloat(setLatitude(e.target.value));
   }
 
   const handleLongitudeChange = (e) => {
-    setLongitude(e.target.value)
+    parseFloat(setLongitude(e.target.value));
   }
 
   const handleOkClick = () => {
@@ -57,12 +57,22 @@ const SatelliteModal = (props) => {
     const satelliteData = {
       name,
       owner,
-      latitude,
-      longitude
-    }
+      latitude: parseFloat(latitude),
+      longitude: parseFloat(longitude)
+    };
 
     if(!name) {
       validationErrors.name = "Name is Required";
+    }
+    if (isNaN(parseFloat(latitude))) {
+      validationErrors.latitude = "Input should be number";
+    } else if (parseFloat(latitude) < -90 || parseFloat(latitude) > 90) {
+      validationErrors.latitude = "Input should be between -90 and 90";
+    }
+    if (isNaN(parseFloat(longitude))) {
+      validationErrors.longitude = "Input should be number";
+    } else if (parseFloat(longitude) < -180 || parseFloat(longitude) > 180) {
+      validationErrors.longitude = "Input should be between -180 and180";
     }
 
     setErrors(validationErrors);
@@ -72,8 +82,8 @@ const SatelliteModal = (props) => {
         dispatch(addSatellite(satelliteData));
         setName('');
         setOwner('');
-        setLatitude(0);
-        setLongitude(0);
+        setLatitude('');
+        setLongitude('');
       } else {
         dispatch(updateSatellite(selectedSatellite.id, satelliteData));
       }
@@ -105,30 +115,28 @@ const SatelliteModal = (props) => {
             <LabelForm>
               Name
             </LabelForm>
-            <InputForm value = {name} onChange={handleNameChange}>
-            </InputForm>
+            <InputForm value = {name} onChange={handleNameChange} />
             {errors.name && <ErrorLabel>{errors.name}</ErrorLabel>}
           </FormGroup>
           <FormGroup>
             <LabelForm>
               Owner
             </LabelForm>
-            <InputForm value = {owner} onChange={handleOwnerChange}>
-            </InputForm>
+            <InputForm value = {owner} onChange={handleOwnerChange} />
           </FormGroup>
           <FormGroup>
             <LabelForm>
               Latitude
             </LabelForm>
-            <InputForm value = {latitude} onChange={handleLatitudeChange}>
-            </InputForm>
+            <InputForm value = {latitude} onChange={handleLatitudeChange} />
+            {errors.latitude && <ErrorLabel>{errors.latitude}</ErrorLabel>}
           </FormGroup>
           <FormGroup>
             <LabelForm>
               Longitude
             </LabelForm>
-            <InputForm value = {longitude} onChange={handleLongitudeChange}>
-            </InputForm>
+            <InputForm value = {longitude} onChange={handleLongitudeChange} />
+            {errors.longitude && <ErrorLabel>{errors.longitude}</ErrorLabel>}
           </FormGroup>
         </ModalBody>
         <ModalFooter>
