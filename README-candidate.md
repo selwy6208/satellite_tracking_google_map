@@ -1,8 +1,29 @@
-# Ai Build take home exercise
+# Satellite Tracking App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Satellite Tracking App is a platform that allows users to track satellites orbiting the Earth. It provides the latest position updates for satellites and displays them on an earth map. This document provides an overview of the project, including setup instructions and important considerations.
 
-## Frontend
+## Features
+
+- View all available satellites in a sidebar list and on the map.
+- Add, edit, and delete satellites with a popup form.
+- Select a satellite to highlight it in the list and center the map on its location.
+- Search for satellites by ID, name, or owner.
+- Use React-Redux for data management.
+- Automated tests for at least one pertinent functionality.
+- Three components: `<Map />`, `<List />`, and `<SearchBar />`.
+
+## Technologies Used
+
+- Frontend: React, react-map-gl, react-redux, styled-components
+- Backend: Java, Docker, PostgreSQL
+- Testing: JUnit, Mockito, Jest
+
+## Frontend Set up
+
+1. Navigate the frontend diiectory\
+   `cd frontend`
+2. Install the dependencies using `npm`\
+   `npm install`
 
 ### Available Scripts
 ### `npm start`
@@ -13,7 +34,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
 
-### `npm test`
+### `npm run test`
 
 Launches the test runner in the interactive watch mode.\
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
