@@ -4,11 +4,9 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
 import List from "./index";
-import { getSatellite } from '../../actions';
+import { getSatellite } from '../../actions/satellitesActions';
 
-const mockStore = configureMockStore([thunk]); // add middleware(s) as needed
-
-jest.mock('axios'); // This overwrites axios methods with jest Mock
+const mockStore = configureMockStore([thunk]); 
 
 describe("List Component", () => {
   let satellites;
@@ -22,9 +20,15 @@ describe("List Component", () => {
       {id: 2, name:'ISS', owner:'ESA', latitude:'40', longitude:'50'}
     ];
     store = mockStore({
-      satellites,
-      selectedSatellite: null,
-      searchQuery: ''
+      satellites: {
+        satellites,
+        selectedSatellite: null,
+        searchQuery: ''
+      },
+      cities: {
+        cities:[],
+        loading: true
+      }
     });
 
     store.dispatch = jest.fn();

@@ -17,8 +17,9 @@ const AppContainer = styled.div`
 `;
 
 const NavBarContainer = styled.div`
-  font-size: 15px;
+  font-size: 20px;
   padding: 5px;
+  font-weight: bold;
 `
 
 const MainContainer = styled.div`

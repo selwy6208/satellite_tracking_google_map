@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Map, { Marker, Popup } from 'react-map-gl';
+import Map, { Marker } from 'react-map-gl';
 import styled from 'styled-components';
 import * as resuableComponents from '../../reusable-components';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
@@ -80,8 +80,7 @@ const MapApp = () => {
       });
     }
 
-    setCities(citiesResponse);
-    console.log(citiesResponse.length);
+    setCities([...citiesResponse]);
   }, [trimedQuery, satellites, selectedSatellite, citiesResponse]);
 
   const handleMarkerClick = (satellite) => {
@@ -97,90 +96,87 @@ const MapApp = () => {
     dispatch(setModalInvisible());
   }
 
-  
-
   return (
-    // <div data-testid='map-container'>
-      <Map
-        {...viewState}
-        style={{width: '100%', height: '100vh'}}
-        onMove={e => setViewState(e.viewState)}
-        mapStyle='mapbox://styles/mapbox/streets-v9'
-        mapboxAccessToken={mapboxToken}
-      >
-        {filteredSatellites.map(satellite => (
-          <Marker
-            key={satellite.id}
-            latitude={satellite.latitude}
-            longitude={satellite.longitude}
-          >
-            <MarkerButton
-              id={`marker-${satellite.id}`}
-              data-testid={`marker-${satellite.id}`}
-              selected={selectedSatellite === satellite}
-              onClick={() => handleMarkerClick(satellite)}
-              onMouseOver ={() => handleHoverClick(satellite)}
-            />
-          </Marker>
-        ))}
-        {cities.map((city) => (
-          <Marker
-            key={city.id}
-            latitude={city.latitude}
-            longitude={city.longitude}
-          >
-            <CityMarker />
-            <div>{city.name}</div>
-          </Marker>
-          )
-        )}
-        {
-          modalVisible && (
-            <ModalContainer>
-              <Modal width='300px'>
-                <ModalHeader>
-                  <TitleContainer>
-                    Satellite Detail
-                  </TitleContainer>
-                  <IconButton onClick={(satellite) => handleCloseClick(satellite)}>
-                    <IconArea icon = {faClose} color='#566787' />
-                  </IconButton>
-                </ModalHeader>
-                <ModalBody>
-                  <FormGroup>
-                    <LabelForm>
-                      Name: {selectedSatellite.name}
-                    </LabelForm>
-                  </FormGroup>
-                  <FormGroup>
-                    <LabelForm>
-                      Owner: {selectedSatellite.owner}
-                    </LabelForm>
-                  </FormGroup>
-                  <FormGroup>
-                    <LabelForm>
-                      Latitude: {selectedSatellite.latitude}
-                    </LabelForm>
-                  </FormGroup>
-                  <FormGroup>
-                    <LabelForm>
-                      Longitude: {selectedSatellite.longitude}
-                    </LabelForm>
-                  </FormGroup>
-                </ModalBody>
-              </Modal>
-            </ModalContainer>
-          )
-        }
-        {
+    <Map data-testid='map-container'
+      {...viewState}
+      style={{width: '100%', height: '100vh'}}
+      onMove={e => setViewState(e.viewState)}
+      mapStyle='mapbox://styles/mapbox/streets-v9'
+      mapboxAccessToken={mapboxToken}
+    >
+      {filteredSatellites.map(satellite => (
+        <Marker
+          key={satellite.id}
+          latitude={satellite.latitude}
+          longitude={satellite.longitude}
+        >
+          <MarkerButton
+            id={`marker-${satellite.id}`}
+            data-testid={`marker-${satellite.id}`}
+            selected={selectedSatellite === satellite}
+            onClick={() => handleMarkerClick(satellite)}
+            onMouseOver ={() => handleHoverClick(satellite)}
+            OnMouseLeave = {() => console.log("leave")}
+          />
+        </Marker>
+      ))}
+      {cities.map((city) => (
+        <Marker
+          key={city.id}
+          latitude={city.latitude}
+          longitude={city.longitude}
+        >
+          <CityMarker />
+          <div>{city.name}</div>
+        </Marker>
+        )
+      )}
+      {
+        modalVisible && (
+          <ModalContainer>
+            <Modal width='300px'>
+              <ModalHeader>
+                <TitleContainer>
+                  Satellite Detail
+                </TitleContainer>
+                <IconButton onClick={(satellite) => handleCloseClick(satellite)}>
+                  <IconArea icon = {faClose} color='#566787' />
+                </IconButton>
+              </ModalHeader>
+              <ModalBody>
+                <FormGroup>
+                  <LabelForm>
+                    Name: {selectedSatellite.name}
+                  </LabelForm>
+                </FormGroup>
+                <FormGroup>
+                  <LabelForm>
+                    Owner: {selectedSatellite.owner}
+                  </LabelForm>
+                </FormGroup>
+                <FormGroup>
+                  <LabelForm>
+                    Latitude: {selectedSatellite.latitude}
+                  </LabelForm>
+                </FormGroup>
+                <FormGroup>
+                  <LabelForm>
+                    Longitude: {selectedSatellite.longitude}
+                  </LabelForm>
+                </FormGroup>
+              </ModalBody>
+            </Modal>
+          </ModalContainer>
+        )
+      }
+      {
         citiesLoading && (
           <LoadingContainer>
             Loading cities...
           </LoadingContainer>
         )
       }
-      </Map>
-    // </div>
+    </Map>
   );
 };
 

@@ -50,6 +50,7 @@ const List = ({ handleEditClick, handleDeleteClick }) => {
   const satellites = useSelector(state => state.satellites.satellites);
   const searchQuery = useSelector(state => state.satellites.searchQuery);
   const selectedSatellite = useSelector(state => state.satellites.selectedSatellite);
+  console.log("selectedSatellite -> ", selectedSatellite);
   const [filteredSatellites, setFilteredSatellites] = useState([]);
 
   const trimedQuery = searchQuery?.toLowerCase().trim();
@@ -67,6 +68,12 @@ const List = ({ handleEditClick, handleDeleteClick }) => {
     }
   }, [trimedQuery, satellites, selectedSatellite]);
 
+  useEffect(() => {
+    const element = document.getElementById(selectedSatellite.id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  },[selectedSatellite]);
 
   const {
     IconArea,
@@ -97,6 +104,7 @@ const List = ({ handleEditClick, handleDeleteClick }) => {
     <ListContainer data-testid='list-container'>
       {filteredSatellites.map(satellite => (
         <ListItem
+          id={`${satellite.id}`}
           key={satellite.id}
           selected={selectedSatellite === satellite}
           onClick={(e) => onSatelliteClick(satellite, e)}

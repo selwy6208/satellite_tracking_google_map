@@ -74,13 +74,19 @@ describe('App Component Test', () => {
 
   beforeEach(() => {
     satellites = [
-      { id: 1, name: 'Hubble Space', owner: 'NASA', latitude: '10', longitude: '20' },
-      { id: 2, name: 'ISS', owner: 'ESA', latitude: '40', longitude: '50' },
+      {id: 1, name:'Hubble Space', owner:'NASA', latitude:'10', longitude:'20'},
+      {id: 2, name:'ISS', owner:'ESA', latitude:'40', longitude:'50'}
     ];
     store = mockStore({
-      satellites,
-      selectedSatellite: null,
-      searchQuery: '',
+      satellites: {
+        satellites,
+        selectedSatellite: null,
+        searchQuery: ''
+      },
+      cities: {
+        cities:[],
+        loading: true
+      }
     });
 
     store.dispatch = jest.fn();
