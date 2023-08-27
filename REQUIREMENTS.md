@@ -2,6 +2,7 @@
 
 Let's build a satellite tracking platform that provides users with the latest position updates for satellites orbiting the Earth. Built using cutting-edge technologies like React, Java, and PostgreSQL 🚀🛰️🪐.
 
+
 <p align="center">
   <img width="400" src="./assets/galaxy.jpg" alt="Galaxy">
 </p>
